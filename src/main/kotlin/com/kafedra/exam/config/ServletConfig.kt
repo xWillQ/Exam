@@ -5,7 +5,10 @@ import com.google.inject.Injector
 import com.google.inject.servlet.GuiceServletContextListener
 import com.google.inject.servlet.ServletModule
 import com.kafedra.exam.filter.CharsetFilter
+import com.kafedra.exam.servlet.DepartmentServlet
+import com.kafedra.exam.servlet.EmployeeServlet
 import com.kafedra.exam.servlet.HelloServlet
+import com.kafedra.exam.servlet.NumberServlet
 import org.flywaydb.core.Flyway
 
 class ServletConfig : GuiceServletContextListener() {
@@ -15,6 +18,10 @@ class ServletConfig : GuiceServletContextListener() {
             filter("/*").through(CharsetFilter::class.java)
 
             serve("/hello").with(HelloServlet::class.java)
+
+            serve("/ajax/department").with(DepartmentServlet::class.java)
+            serve("/ajax/employee").with(EmployeeServlet::class.java)
+            serve("/ajax/number").with(NumberServlet::class.java)
 
             val url = System.getenv("JDBC_DATABASE_URL") ?: "jdbc:h2:./aaa;MV_STORE=FALSE"
             val login = System.getenv("JDBC_DATABASE_USERNAME") ?: "se"

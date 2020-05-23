@@ -6,8 +6,7 @@
     <version column="version" name="version" type="long"/>
     <property column="name" name="name" type="string"/>
 
-    <many-to-one name="department" column = "departmentId"
-         class="com.kafedra.exam.domain.Department" not-null="true"/>
+    <property name="departmentId" column = "departmentId" type="int"/>
 
   </class>
 </hibernate-mapping>

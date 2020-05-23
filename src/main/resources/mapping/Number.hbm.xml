@@ -12,8 +12,7 @@
     </property>
     <property column="number" name="number" type="string"/>
 
-    <many-to-one name="employee" column = "employeeId"
-         class="com.kafedra.exam.domain.Employee" not-null="true"/>
+    <property name="employeeId" column = "employeeId" type="int"/>
 
   </class>
 </hibernate-mapping>

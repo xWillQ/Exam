@@ -4,7 +4,12 @@
       <generator class="increment"/>
     </id>
     <version column="version" name="version" type="long"/>
-    <property column="title" name="title" type="string"/>
+    <property column="type" name="type">
+      <type name="org.hibernate.type.EnumType">
+          <param name="enumClass">com.kafedra.exam.PhoneType</param>
+          <param name="useNamed">true</param>
+      </type>
+    </property>
     <property column="number" name="number" type="string"/>
 
     <many-to-one name="employee" column = "employeeId"

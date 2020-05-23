@@ -1,0 +1,13 @@
+<hibernate-mapping>
+  <class name="com.kafedra.exam.domain.Employee" table="employees">
+    <id column="id" name="id" type="int">
+      <generator class="increment"/>
+    </id>
+    <version column="version" name="version" type="long"/>
+    <property column="name" name="name" type="string"/>
+
+    <many-to-one name="department" column = "departmentId"
+         class="com.kafedra.exam.domain.Department" not-null="true"/>
+
+  </class>
+</hibernate-mapping>

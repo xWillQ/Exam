@@ -11,20 +11,27 @@ class Form extends React.Component {
     }
 
     changeHandler(event) {
-        if (event.target.id == "action_list") this.state.action = event.target.value
-        else if (event.target.id == "table_list") this.state.table = event.target.value
-        else this.state.fields[this.state.table][event.target.name] = event.target.value
-        this.setState(this.state)
-        return
+        let state = this.state
+        let target = event.target
+
+        if (target.id == "action_list") state.action = target.value
+        else if (target.id == "table_list") state.table = target.value
+        else {
+            let value = target.value
+            if (target.name.toLowerCase().includes("id")) {
+                if (value == "") state.fields[state.table][target.name] = null
+                else if (!isNaN(value)) state.fields[state.table][target.name] = value
+            }
+            else state.fields[state.table][target.name] = value
+        }
+        this.setState(state)
     }
 
     send() {
         let req = new Request(`ajax/${this.state.table}?${this.state.action}`, { method: "POST", body: JSON.stringify(this.state.fields[this.state.table]) })
-        fetch(req).then(response => response.text()).then(msg => {
+        fetch(req).then(() => {
             let table = document.getElementById(`${this.state.table}_table`)
             updateData(this.state.table, table.getAttribute("query"))
-            // if (msg == 0) {
-            // }
         })
     }
 
@@ -35,6 +42,7 @@ class Form extends React.Component {
             if (this.state.action == "delete" && value != "id") return
             if (this.state.action == "add" && value == "id") return
             if (this.state.action == "update" && value == "employeeId") return
+
             let prevText = this.state.fields[this.state.table][value]
             if (prevText == null) prevText = ""
             return React.createElement("div", { id: "input_container" },

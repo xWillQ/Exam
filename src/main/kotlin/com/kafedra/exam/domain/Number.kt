@@ -5,4 +5,5 @@ class Number {
     var title = ""
     var number = ""
     var employee: Employee? = null
+    var version: Long = 0
 }

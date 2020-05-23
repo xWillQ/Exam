@@ -16,6 +16,24 @@ class EmployeeDao {
         return employees
     }
 
+    fun searchBy(params: Map<String, String>): List<Employee> {
+        val session = sessionProvider.get().openSession()
+        var queryString = ""
+        var and = false
+        for (pair in params) {
+            if (pair.value == null || pair.value == "") continue
+            if (and) queryString += " AND"
+            if (pair.key == "departmentId" && pair.value == "0") queryString += " ${pair.key} = null"
+            else queryString += " ${pair.key} = '${pair.value}'"
+            and = true
+        }
+        if (queryString != "") queryString = " WHERE $queryString"
+        val query = session.createQuery("FROM Employee $queryString", Employee::class.java)
+        val employees = query.resultList
+        session.close()
+        return employees
+    }
+
     fun addEmployee(emp: Employee) {
         val session = sessionProvider.get().openSession()
         session.beginTransaction()

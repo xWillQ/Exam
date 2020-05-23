@@ -16,6 +16,23 @@ class DepartmentDao {
         return departments
     }
 
+    fun searchBy(params: Map<String, String>): List<Department> {
+        val session = sessionProvider.get().openSession()
+        var queryString = ""
+        var and = false
+        for (pair in params) {
+            if (pair.value == null || pair.value == "") continue
+            if (and) queryString += " AND"
+            queryString += " ${pair.key} = '${pair.value}'"
+            and = true
+        }
+        if (queryString != "") queryString = " WHERE $queryString"
+        val query = session.createQuery("FROM Department $queryString", Department::class.java)
+        val departments = query.resultList
+        session.close()
+        return departments
+    }
+
     fun deleteDepartment(id: Int) {
         val session = sessionProvider.get().openSession()
         session.beginTransaction()

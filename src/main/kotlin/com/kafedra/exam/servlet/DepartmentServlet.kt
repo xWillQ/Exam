@@ -1,5 +1,6 @@
 package com.kafedra.exam.servlet
 
+import com.google.gson.reflect.TypeToken
 import com.google.inject.Inject
 import com.google.inject.Singleton
 import com.kafedra.aaapp.di.GSONProvider
@@ -32,6 +33,11 @@ class DepartmentServlet : HttpServlet() {
             req.getParameter("add") != null -> dao.addDepartment(dep)
             req.getParameter("update") != null -> dao.editDepartment(dep)
             req.getParameter("delete") != null -> dao.deleteDepartment(dep.id)
+            req.getParameter("search") != null -> {
+                val type = object : TypeToken<MutableMap<String, String>>() {}.type
+                val map = gson.fromJson<MutableMap<String, String>>(json, type)
+                resp.writer.write(gson.toJson(dao.searchBy(map)))
+            }
         }
     }
 }

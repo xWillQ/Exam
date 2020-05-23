@@ -5,6 +5,10 @@
     margin-bottom: 5px;
 }
 
+#tables {
+    overflow: hidden;
+}
+
 table {
     border: solid gray;
     float: left;
@@ -14,14 +18,4 @@ table {
 
 th, td {
     border: solid gray 1px;
-}
-
-#department_form_container, #employee_form_container, #number_form_container {
-    margin: 15px;
-    margin-right: 50px;
-}
-
-#add_forms, #delete_forms, #update_forms {
-    float: left;
-    width: 33%;
 }

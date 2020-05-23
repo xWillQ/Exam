@@ -41,5 +41,15 @@ ReactDOM.render(
     }),
     document.getElementById("form_container")
 );
+ReactDOM.render(
+    React.createElement(SearchForm, {
+        "forms": {
+            "department": { "id": null, "title": "", "number": "" },
+            "employee": { "id": null, "name": "", "departmentId": null },
+            "number": { "id": null, "type": "", "number": "", "employeeId": null }
+        }
+    }),
+    document.getElementById("search_container")
+);
 
 updateData("department")

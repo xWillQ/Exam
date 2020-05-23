@@ -16,6 +16,23 @@ class NumberDao {
         return numbers
     }
 
+    fun searchBy(params: Map<String, String>): List<Number> {
+        val session = sessionProvider.get().openSession()
+        var queryString = ""
+        var and = false
+        for (pair in params) {
+            if (pair.value == null || pair.value == "") continue
+            if (and) queryString += " AND"
+            queryString += " ${pair.key} = '${pair.value}'"
+            and = true
+        }
+        if (queryString != "") queryString = " WHERE $queryString"
+        val query = session.createQuery("FROM Number $queryString", Number::class.java)
+        val numbers = query.resultList
+        session.close()
+        return numbers
+    }
+
     fun addNumber(numb: Number) {
         val session = sessionProvider.get().openSession()
         session.beginTransaction()

@@ -31,21 +31,15 @@ const updateData = (table, query) => {
     }
 }
 
-let actions = ["add", "delete", "update"]
-let tables = ["department", "employee", "number"]
-let fields = {
-    "department": { "id": 0, "title": "", "number": "" },
-    "employee": { "id": 0, "name": "", "departmentId": null },
-    "number": { "id": 0, "type": "", "number": "", "employeeId": null }
-}
-
-tables.forEach((t) => {
-    actions.forEach((a) => {
-        ReactDOM.render(
-            React.createElement(Form, { "forms": fields[t], "table": t, "action": a }),
-            document.getElementById(`${a}_${t}_form_container`)
-        );
-    })
-})
+ReactDOM.render(
+    React.createElement(Form, {
+        "forms": {
+            "department": { "id": null, "title": "", "number": "" },
+            "employee": { "id": null, "name": "", "departmentId": null },
+            "number": { "id": null, "type": "", "number": "", "employeeId": null }
+        }
+    }),
+    document.getElementById("form_container")
+);
 
 updateData("department")

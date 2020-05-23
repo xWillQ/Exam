@@ -3,8 +3,8 @@ package com.kafedra.exam.servlet
 import com.google.inject.Inject
 import com.google.inject.Singleton
 import com.kafedra.aaapp.di.GSONProvider
-import com.kafedra.exam.dao.EmployeeDao
 import com.kafedra.exam.dao.NumberDao
+import com.kafedra.exam.domain.Number
 import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
@@ -13,13 +13,21 @@ import javax.servlet.http.HttpServletResponse
 class NumberServlet : HttpServlet() {
     @Inject
     lateinit var dao: NumberDao
+
     @Inject
     lateinit var gsonProvider: GSONProvider
 
     override fun doGet(request: HttpServletRequest, response: HttpServletResponse) {
         val gson = gsonProvider.get()
         val id = request.getParameter("employeeId").toIntOrNull()
-        val json = gson.toJson(dao.getNumbersByEmployee(id?:0))
+        val json = gson.toJson(dao.getNumbersByEmployee(id ?: 0))
         response.writer.write(json)
+    }
+
+    override fun doPost(req: HttpServletRequest, resp: HttpServletResponse) {
+        val json = req.reader.readLine()
+        val gson = gsonProvider.get()
+        val numb = gson.fromJson(json, Number::class.java)
+        dao.addNumber(numb)
     }
 }

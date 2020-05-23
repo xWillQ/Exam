@@ -1,0 +1,1 @@
+web: java -jar WebService/build/server/jetty-runner-*.jar --port $PORT build/libs/*.war

@@ -28,6 +28,7 @@ class NumberServlet : HttpServlet() {
         val json = req.reader.readLine()
         val gson = gsonProvider.get()
         val numb = gson.fromJson(json, Number::class.java)
-        dao.addNumber(numb)
+        if (numb.type != null)
+            dao.addNumber(numb)
     }
 }

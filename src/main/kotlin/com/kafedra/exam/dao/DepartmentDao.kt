@@ -16,7 +16,14 @@ class DepartmentDao {
     }
 
     fun deleteDepartment(id: Int) {
-        // TODO
+        val session = sessionProvider.get().openSession()
+        session.beginTransaction()
+
+        session.createQuery("UPDATE Employee SET departmentId = null WHERE departmentId = $id").executeUpdate()
+        session.createQuery("DELETE FROM Department WHERE id = $id").executeUpdate()
+
+        session.transaction.commit()
+        session.close()
     }
 
     fun editDepartment(dep: Department) {

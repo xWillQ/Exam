@@ -26,4 +26,15 @@ class EmployeeDao {
         session.transaction.commit()
         session.close()
     }
+
+    fun deleteEmployee(id: Int) {
+        val session = sessionProvider.get().openSession()
+        session.beginTransaction()
+
+        session.createQuery("DELETE FROM Number WHERE employeeId = $id").executeUpdate()
+        session.createQuery("DELETE FROM Employee WHERE id = $id").executeUpdate()
+
+        session.transaction.commit()
+        session.close()
+    }
 }

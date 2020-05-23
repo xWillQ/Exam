@@ -26,4 +26,14 @@ class NumberDao {
         session.transaction.commit()
         session.close()
     }
+
+    fun deleteNumber(id: Int) {
+        val session = sessionProvider.get().openSession()
+        session.beginTransaction()
+
+        session.createQuery("DELETE FROM Number WHERE id = $id").executeUpdate()
+
+        session.transaction.commit()
+        session.close()
+    }
 }

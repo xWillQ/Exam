@@ -2,14 +2,13 @@ package com.kafedra.exam.dao
 
 import com.google.inject.Inject
 import com.kafedra.aaapp.di.HibernateProvider
-import com.kafedra.exam.domain.Department
 import com.kafedra.exam.domain.Number
 
 class NumberDao {
     @Inject
     lateinit var sessionProvider: HibernateProvider
 
-    fun getNumbersByEmployee(empId: Int) : List<Number> {
+    fun getNumbersByEmployee(empId: Int): List<Number> {
         val session = sessionProvider.get().openSession()
         val query = session.createQuery("FROM Number WHERE employeeId = $empId", Number::class.java)
         val numbers = query.resultList
@@ -22,6 +21,24 @@ class NumberDao {
         session.beginTransaction()
 
         session.save(numb)
+
+        session.transaction.commit()
+        session.close()
+    }
+
+    fun editNumber(numb: Number) {
+        val session = sessionProvider.get().openSession()
+        session.beginTransaction()
+
+        val prev = session.get(Number::class.java, numb.id)
+        if (prev == null) {
+            session.close()
+            return
+        }
+
+        if (numb.type != null) prev.type = numb.type
+        if (numb.number != "") prev.number = numb.number
+        session.update(prev)
 
         session.transaction.commit()
         session.close()

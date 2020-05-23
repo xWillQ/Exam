@@ -5,9 +5,10 @@ import com.kafedra.aaapp.di.HibernateProvider
 import com.kafedra.exam.domain.Department
 
 class DepartmentDao {
-    @Inject lateinit var sessionProvider: HibernateProvider
+    @Inject
+    lateinit var sessionProvider: HibernateProvider
 
-    fun getDepartments() : List<Department> {
+    fun getDepartments(): List<Department> {
         val session = sessionProvider.get().openSession()
         val query = session.createQuery("FROM Department", Department::class.java)
         val departments = query.resultList
@@ -27,14 +28,21 @@ class DepartmentDao {
     }
 
     fun editDepartment(dep: Department) {
-        // TODO
-//        val session = sessionProvider.get().openSession()
-//        session.beginTransaction()
-//
-//        session.update(dep)
-//
-//        session.transaction.commit()
-//        session.close()
+        val session = sessionProvider.get().openSession()
+        session.beginTransaction()
+
+        val prev = session.get(Department::class.java, dep.id)
+        if (prev == null) {
+            session.close()
+            return
+        }
+
+        if (dep.title != "") prev.title = dep.title
+        if (dep.number != "") prev.number = dep.number
+        session.update(prev)
+
+        session.transaction.commit()
+        session.close()
     }
 
     fun addDepartment(dep: Department) {

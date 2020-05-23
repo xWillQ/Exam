@@ -31,18 +31,21 @@ const updateData = (table, query) => {
     }
 }
 
+let actions = ["add", "delete", "update"]
+let tables = ["department", "employee", "number"]
+let fields = {
+    "department": { "id": 0, "title": "", "number": "" },
+    "employee": { "id": 0, "name": "", "departmentId": null },
+    "number": { "id": 0, "type": "", "number": "", "employeeId": null }
+}
 
-ReactDOM.render(
-    React.createElement(Form, { "forms": { "title": "", "number": "" }, "table": "department" }),
-    document.getElementById("department_form_container")
-);
-ReactDOM.render(
-    React.createElement(Form, { "forms": { "name": "", "departmentId": 0 }, "table": "employee" }),
-    document.getElementById("employee_form_container")
-);
-ReactDOM.render(
-    React.createElement(Form, { "forms": { "type": "", "number": "", "employeeId": 0 }, "table": "number" }),
-    document.getElementById("number_form_container")
-);
+tables.forEach((t) => {
+    actions.forEach((a) => {
+        ReactDOM.render(
+            React.createElement(Form, { "forms": fields[t], "table": t, "action": a }),
+            document.getElementById(`${a}_${t}_form_container`)
+        );
+    })
+})
 
 updateData("department")

@@ -5,13 +5,13 @@ class SearchForm extends React.Component {
             fields: {
                 "department": { "id": null, "title": "", "number": "" },
                 "employee": { "id": null, "name": "", "departmentId": null },
-                "number": { "id": null, "type": "INTERNAL_CELL", "number": "", "employeeId": null }
+                "number": { "id": null, "type": "", "number": "", "employeeId": null }
             },
             table: "department",
-            numberTypes: null
+            numberTypes: [""]
         }
         fetch(new Request(`ajax/number?types`)).then(response => response.json()).then(data => {
-            this.state.numberTypes = data
+            this.state.numberTypes.push(...data)
         })
         this.changeHandler = this.changeHandler.bind(this)
         this.send = this.send.bind(this)

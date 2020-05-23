@@ -27,6 +27,8 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.6'
 
     download 'org.eclipse.jetty:jetty-runner:9.4.9.v20180320'
+
+    implementation "org.postgresql:postgresql:42.2.12"
 }
 
 gretty {

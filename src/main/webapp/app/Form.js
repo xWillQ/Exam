@@ -2,15 +2,8 @@ class Form extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            fields: {
-                login: "",
-                pass: "",
-                res: "",
-                role: "",
-                ds: "",
-                de: "",
-                vol: ""
-            }
+            fields: props.forms,
+            table: props.table
         }
         this.changeHandler = this.changeHandler.bind(this)
         this.send = this.send.bind(this)
@@ -21,11 +14,11 @@ class Form extends React.Component {
     }
 
     send() {
-        let req = new Request("ajax/activity", { method: "POST", body: JSON.stringify(this.state.fields) })
+        let req = new Request(`ajax/${this.state.table}`, { method: "POST", body: JSON.stringify(this.state.fields) })
         fetch(req).then(response => response.text()).then(msg => {
             if (msg == 0) {
-                let table = document.getElementById("activity_table")
-                updateData("activity", table.getAttribute("query"))
+                let table = document.getElementById(`${this.state.table}_table`)
+                updateData(this.state.table, table.getAttribute("query"))
             }
         })
     }

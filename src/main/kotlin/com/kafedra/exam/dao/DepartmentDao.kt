@@ -29,4 +29,14 @@ class DepartmentDao {
 //        session.transaction.commit()
 //        session.close()
     }
+
+    fun addDepartment(dep: Department) {
+        val session = sessionProvider.get().openSession()
+        session.beginTransaction()
+
+        session.save(dep)
+
+        session.transaction.commit()
+        session.close()
+    }
 }

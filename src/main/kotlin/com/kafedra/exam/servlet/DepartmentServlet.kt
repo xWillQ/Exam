@@ -4,6 +4,7 @@ import com.google.inject.Inject
 import com.google.inject.Singleton
 import com.kafedra.aaapp.di.GSONProvider
 import com.kafedra.exam.dao.DepartmentDao
+import com.kafedra.exam.domain.Department
 import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
@@ -19,5 +20,12 @@ class DepartmentServlet : HttpServlet() {
         val gson = gsonProvider.get()
         val json = gson.toJson(dao.getDepartments())
         response.writer.write(json)
+    }
+
+    override fun doPost(req: HttpServletRequest, resp: HttpServletResponse) {
+        val json = req.reader.readLine()
+        val gson = gsonProvider.get()
+        val dep = gson.fromJson(json, Department::class.java)
+        dao.addDepartment(dep)
     }
 }

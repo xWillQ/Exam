@@ -20,6 +20,10 @@ class NumberServlet : HttpServlet() {
 
     override fun doGet(request: HttpServletRequest, response: HttpServletResponse) {
         val gson = gsonProvider.get()
+        if (request.getParameter("types") != null) {
+            response.writer.write(gson.toJson(dao.getTypes()))
+            return
+        }
         val id = request.getParameter("employeeId").toIntOrNull()
         val json = gson.toJson(dao.getNumbersByEmployee(id ?: 0))
         response.writer.write(json)

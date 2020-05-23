@@ -2,10 +2,18 @@ class Form extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            fields: props.forms,
+            fields: {
+                "department": { "id": null, "title": "", "number": "" },
+                "employee": { "id": null, "name": "", "departmentId": null },
+                "number": { "id": null, "type": "INTERNAL_CELL", "number": "", "employeeId": null }
+            },
             table: "department",
-            action: "add"
+            action: "add",
+            numberTypes: null
         }
+        fetch(new Request(`ajax/number?types`)).then(response => response.json()).then(data => {
+            this.state.numberTypes = data
+        })
         this.changeHandler = this.changeHandler.bind(this)
         this.send = this.send.bind(this)
     }
@@ -35,6 +43,12 @@ class Form extends React.Component {
         })
     }
 
+    renderNumberTypes() {
+        return this.state.numberTypes.map(value => {
+            return React.createElement("option", { "value": value }, value)
+        })
+    }
+
     renderFields() {
         let fields = Object.keys(this.state.fields[this.state.table])
         return fields.map((value) => {
@@ -42,6 +56,14 @@ class Form extends React.Component {
             if (this.state.action == "delete" && value != "id") return
             if (this.state.action == "add" && value == "id") return
             if (this.state.action == "update" && value == "employeeId") return
+            if (this.state.table == "number" && value == "type") {
+                return React.createElement("div", { id: "input_container" },
+                    [
+                        value,
+                        React.createElement("select", { id: "input_field", name: value, onChange: this.changeHandler }, [this.renderNumberTypes()]),
+                    ]
+                )
+            }
 
             let prevText = this.state.fields[this.state.table][value]
             if (prevText == null) prevText = ""
@@ -58,15 +80,15 @@ class Form extends React.Component {
         return (
             React.createElement("form", null,
                 [
-                    React.createElement("select", { id: "table_list", onChange: this.changeHandler }, [
-                        React.createElement("option", { value: "department" }, "Departments"),
-                        React.createElement("option", { value: "employee" }, "Employee"),
-                        React.createElement("option", { value: "number" }, "Number")
-                    ]),
                     React.createElement("select", { id: "action_list", onChange: this.changeHandler }, [
                         React.createElement("option", { value: "add" }, "Add"),
                         React.createElement("option", { value: "delete" }, "Delete"),
                         React.createElement("option", { value: "update" }, "Update")
+                    ]),
+                    React.createElement("select", { id: "table_list", onChange: this.changeHandler }, [
+                        React.createElement("option", { value: "department" }, "Department"),
+                        React.createElement("option", { value: "employee" }, "Employee"),
+                        React.createElement("option", { value: "number" }, "Number")
                     ]),
                     this.renderFields(),
                     React.createElement("input", { type: "button", id: "submit-button", value: "Submit", onClick: this.send })

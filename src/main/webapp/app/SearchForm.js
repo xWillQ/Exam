@@ -2,9 +2,17 @@ class SearchForm extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            fields: props.forms,
-            table: "department"
+            fields: {
+                "department": { "id": null, "title": "", "number": "" },
+                "employee": { "id": null, "name": "", "departmentId": null },
+                "number": { "id": null, "type": "INTERNAL_CELL", "number": "", "employeeId": null }
+            },
+            table: "department",
+            numberTypes: null
         }
+        fetch(new Request(`ajax/number?types`)).then(response => response.json()).then(data => {
+            this.state.numberTypes = data
+        })
         this.changeHandler = this.changeHandler.bind(this)
         this.send = this.send.bind(this)
     }
@@ -12,6 +20,7 @@ class SearchForm extends React.Component {
     changeHandler(event) {
         let state = this.state
         let target = event.target
+
         if (target.id == "table_list") state.table = target.value
         else {
             let value = target.value
@@ -43,9 +52,24 @@ class SearchForm extends React.Component {
         })
     }
 
+    renderNumberTypes() {
+        return this.state.numberTypes.map(value => {
+            return React.createElement("option", { "value": value }, value)
+        })
+    }
+
     renderFields() {
         let fields = Object.keys(this.state.fields[this.state.table])
         return fields.map((value) => {
+            if (this.state.table == "number" && value == "type") {
+                return React.createElement("div", { id: "input_container" },
+                    [
+                        value,
+                        React.createElement("select", { id: "input_field", name: value, onChange: this.changeHandler }, [this.renderNumberTypes()]),
+                    ]
+                )
+            }
+
             let prevText = this.state.fields[this.state.table][value]
             if (prevText == null) prevText = ""
             return React.createElement("div", { id: "input_container" },

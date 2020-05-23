@@ -2,6 +2,7 @@ package com.kafedra.exam.dao
 
 import com.google.inject.Inject
 import com.kafedra.aaapp.di.HibernateProvider
+import com.kafedra.exam.PhoneType
 import com.kafedra.exam.domain.Number
 
 class NumberDao {
@@ -69,5 +70,9 @@ class NumberDao {
 
         session.transaction.commit()
         session.close()
+    }
+
+    fun getTypes() : List<String> {
+        return PhoneType.values().map { it.name }
     }
 }

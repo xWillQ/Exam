@@ -19,5 +19,6 @@ allprojects {
 
     dependencies {
         implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+        implementation 'com.google.inject:guice:4.2.3'
     }
 }

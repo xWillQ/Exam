@@ -16,7 +16,7 @@ class HibernateProvider : Provider<SessionFactory> {
             cfg.setProperty("hibernate.connection.url", url)
             cfg.setProperty("hibernate.connection.username", System.getenv("JDBC_DATABASE_USERNAME"))
             cfg.setProperty("hibernate.connection.password", System.getenv("JDBC_DATABASE_PASSWORD"))
-            // cfg.setProperty("hibernate.connection.driverClass", "org.postgresql.Driver")
+            cfg.setProperty("hibernate.connection.driverClass", "org.postgresql.Driver")
         }
         sessionFactory = cfg.buildSessionFactory()
     }

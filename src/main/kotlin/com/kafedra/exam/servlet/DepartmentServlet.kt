@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse
 class DepartmentServlet : HttpServlet() {
     @Inject
     lateinit var dao: DepartmentDao
+
     @Inject
     lateinit var gsonProvider: GSONProvider
 
@@ -26,6 +27,11 @@ class DepartmentServlet : HttpServlet() {
         val json = req.reader.readLine()
         val gson = gsonProvider.get()
         val dep = gson.fromJson(json, Department::class.java)
-        dao.addDepartment(dep)
+
+        when {
+            req.getParameter("add") != null -> dao.addDepartment(dep)
+            req.getParameter("update") != null -> dao.editDepartment(dep)
+            req.getParameter("delete") != null -> dao.deleteDepartment(dep.id)
+        }
     }
 }

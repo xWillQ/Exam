@@ -32,6 +32,11 @@ class EmployeeServlet : HttpServlet() {
         val json = req.reader.readLine()
         val gson = gsonProvider.get()
         val emp = gson.fromJson(json, Employee::class.java)
-        dao.addEmployee(emp)
+
+        when {
+            req.getParameter("add") != null -> dao.addEmployee(emp)
+            req.getParameter("update") != null -> dao.editEmployee(emp)
+            req.getParameter("delete") != null -> dao.deleteEmployee(emp.id)
+        }
     }
 }

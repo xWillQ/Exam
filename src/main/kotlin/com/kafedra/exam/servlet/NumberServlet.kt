@@ -28,7 +28,12 @@ class NumberServlet : HttpServlet() {
         val json = req.reader.readLine()
         val gson = gsonProvider.get()
         val numb = gson.fromJson(json, Number::class.java)
-        if (numb.type != null)
-            dao.addNumber(numb)
+
+        when {
+            (req.getParameter("add") != null && numb.type != null) -> dao.addNumber(numb)
+            req.getParameter("update") != null -> dao.editNumber(numb)
+            req.getParameter("delete") != null -> dao.deleteNumber(numb.id)
+        }
+
     }
 }

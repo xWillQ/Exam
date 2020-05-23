@@ -31,9 +31,18 @@ const updateData = (table, query) => {
     }
 }
 
+
 ReactDOM.render(
     React.createElement(Form, { "forms": { "title": "", "number": "" }, "table": "department" }),
     document.getElementById("department_form_container")
+);
+ReactDOM.render(
+    React.createElement(Form, { "forms": { "name": "", "departmentId": 0 }, "table": "employee" }),
+    document.getElementById("employee_form_container")
+);
+ReactDOM.render(
+    React.createElement(Form, { "forms": { "type": "", "number": "", "employeeId": 0 }, "table": "number" }),
+    document.getElementById("number_form_container")
 );
 
 updateData("department")

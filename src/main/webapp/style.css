@@ -18,3 +18,16 @@ table {
 th, td {
     border: solid gray 1px;
 }
+
+#department_form_container {
+    margin: 15px;
+    margin-right: 50px;
+}
+#employee_form_container {
+    margin: 15px;
+    margin-right: 50px;
+}
+#number_form_container {
+    margin: 15px;
+    margin-right: 50px;
+}
